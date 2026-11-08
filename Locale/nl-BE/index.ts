@@ -1,0 +1,12 @@
+export default {
+  languageName: 'English (UK)', appName: 'Gamify Music Theory', tagline: 'Little notes. Big discoveries.',
+  practice: 'Practice', settings: 'Settings', names: 'Note names', lengths: 'Note lengths', rests: 'Rests',
+  correct: 'Correct', wrong: 'Wrong', namePrompt: 'What note is this?', lengthPrompt: 'How long does this note last?', restPrompt: 'How long does this rest last?',
+  timeHint: 'Count the beats in 4/4 time.', correctFeedback: 'Well done!', wrongFeedback: 'Keep practising! The answer is',
+  next: 'Next question', reset: 'New session', language: 'Language', clefs: 'Clefs and note ranges', treble: 'Treble clef', bass: 'Bass clef', lowest: 'Lowest note', highest: 'Highest note',
+  rangeHint: 'Enable at least one clef. Ranges apply to the note names game.', savedHint: 'Settings and counters are saved on this device. Everything works offline.',
+  noteNames: ['C - Do', 'D - Re', 'E - Mi', 'F - Fa', 'G - Sol', 'A - La', 'B - Si'],
+  durations: ['Whole · 4 beats', 'Half · 2 beats', 'Quarter · 1 beat', 'Eighth · ½ beat'],
+  staffLabel: 'Staff with a note to identify', durationLabel: 'Musical symbol with a duration to identify',
+  loading: 'Getting your music ready…', storageError: 'Progress could not be saved on this device.', decrease: 'Decrease', increase: 'Increase',
+};
