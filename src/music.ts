@@ -5,7 +5,7 @@ export const NOTE_NAMES = ['C - Do', 'D - Re', 'E - Mi', 'F - Fa', 'G - Sol', 'A
 export const DURATIONS = ['Whole · 4 beats', 'Half · 2 beats', 'Quarter · 1 beat', 'Eighth · ½ beat'];
 export const noteLabel = (index: number) => `${LETTERS[index % 7]}${Math.floor(index / 7)}`;
 export type Settings = { enabled: Record<Clef, boolean>; ranges: Record<Clef, [number, number]> };
-export const DEFAULT_SETTINGS: Settings = { enabled: { treble: true, bass: false }, ranges: { treble: [28, 39], bass: [16, 28] } };
+export const DEFAULT_SETTINGS: Settings = { enabled: { treble: true, bass: false }, ranges: { treble: [27, 32], bass: [24, 29] } };
 export type Question = { clef: Clef; note: number; value: number; answer: number };
 export function makeQuestion(mode: Mode, settings: Settings, previous?: Question): Question {
   const clefs = (['treble', 'bass'] as Clef[]).filter(c => settings.enabled[c]);
