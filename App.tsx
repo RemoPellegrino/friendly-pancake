@@ -4,6 +4,7 @@ import './src/styles.css';
 import { DEFAULT_LOCALE, locales } from './Locale';
 import { type Clef, DEFAULT_SETTINGS, makeQuestion, type Mode, noteLabel, type Settings } from './src/music';
 import { Staff } from './src/Staff';
+import { RangeStaff } from './src/RangeStaff';
 
 type Score = { correct: number; wrong: number };
 type Scores = Record<Mode, Score>;
@@ -64,9 +65,12 @@ export default function App() {
   }
   function updateSettings(value: Settings) { setSettings(value); next(mode, value); }
   function changeRange(clef: Clef, bound: 0 | 1, delta: number) {
+    setRangeNote(clef, bound, settings.ranges[clef][bound] + delta);
+  }
+  function setRangeNote(clef: Clef, bound: 0 | 1, note: number) {
     const range: [number, number] = [...settings.ranges[clef]];
-    range[bound] = Math.max(14, Math.min(42, range[bound] + delta));
-    if (range[0] > range[1]) range[bound === 0 ? 1 : 0] = range[bound];
+    range[bound] = Math.max(bound === 0 ? 14 : range[0], Math.min(bound === 0 ? range[1] : 42, note));
+    if (range[bound] === settings.ranges[clef][bound]) return;
     updateSettings({ ...settings, ranges: { ...settings.ranges, [clef]: range } });
   }
   const choices = mode === 'names' ? t.noteNames : t.durations;
@@ -93,6 +97,7 @@ export default function App() {
         <h2 className="heading">{t.clefs}</h2><span className="hint">{t.rangeHint}</span>
         {(['treble', 'bass'] as Clef[]).map(c => <div key={c} className="clef">
           <div className="rangeRow"><span className="label">{t[c]}</span><input type="checkbox" role="switch" aria-label={t[c]} checked={settings.enabled[c]} onChange={event => { const enabled = event.target.checked; if (!enabled && !settings.enabled[c === 'treble' ? 'bass' : 'treble']) return; updateSettings({ ...settings, enabled: { ...settings.enabled, [c]: enabled } }); }}/></div>
+          <RangeStaff clef={c} range={settings.ranges[c]} text={t} onChange={(bound, note) => setRangeNote(c, bound, note)}/>
           {([0, 1] as const).map(bound => <div className="rangeRow" key={bound}><span className="hint">{bound === 0 ? t.lowest : t.highest}</span><div className="stepper"><Button title="−" label={`${t.decrease} ${bound === 0 ? t.lowest : t.highest}, ${t[c]}`} onPress={() => changeRange(c, bound, -1)}/><span className="note">{noteLabel(settings.ranges[c][bound])}</span><Button title="+" label={`${t.increase} ${bound === 0 ? t.lowest : t.highest}, ${t[c]}`} onPress={() => changeRange(c, bound, 1)}/></div></div>)}
         </div>)}
         <span className="hint">{t.savedHint}</span>

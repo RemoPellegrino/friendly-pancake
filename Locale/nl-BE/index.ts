@@ -1,6 +1,8 @@
 
 export default {
   languageName: 'Nederlands (BE)',
+  dragRangeHint: 'Sleep de paarse laagste noot of de groene hoogste noot omhoog of omlaag. Gebruik de pijltjestoetsen als een noot geselecteerd is.',
+  rangeStaffLabel: 'Stel het nootbereik in op de notenbalk',
   appName: 'Gamify Music Theory',
   tagline: 'Kleine noten. Grote ontdekkingen.',
 

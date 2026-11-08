@@ -1,5 +1,7 @@
 export default {
   languageName: 'English (UK)', appName: 'Gamify Music Theory', tagline: 'Little notes. Big discoveries.',
+  dragRangeHint: 'Drag the purple lowest note or the teal highest note up or down. Use arrow keys when a note is selected.',
+  rangeStaffLabel: 'Set the note range on the staff',
   practice: 'Practice', settings: 'Settings', names: 'Note names', lengths: 'Note lengths', rests: 'Rests',
   correct: 'Correct', wrong: 'Wrong', namePrompt: 'What note is this?', lengthPrompt: 'How long does this note last?', restPrompt: 'How long does this rest last?',
   timeHint: 'Count the beats in 4/4 time.', correctFeedback: 'Well done!', wrongFeedback: 'Keep practising! The answer is',
