@@ -1,5 +1,5 @@
 
-export default {
+export default { rhythm: 'Ritme oefenen', rhythmHelp: 'Houd elke noot volledig aan. Laat los tijdens rusten. Gebruik het vlak of focus het en houd de spatiebalk in.', tempo: 'Tempo (BPM)', metronome: 'Metronoomklik', rhythmSheet: 'Ritme in 4/4', rhythmRest: 'Kwartrust', rhythmHalf: 'Halve noot', rhythmQuarter: 'Kwartnoot', beatProgress: 'Telvoortgang', countIn: 'Aftellen: vier tellen', rhythmReady: 'Klaar voor vier tellen', rhythmResult: 'Noten op tijd: {score}/2', holding: 'Ingedrukt', rhythmPad: 'Druk en houd vast', startRhythm: 'Start', stopRhythm: 'Stop',
   languageName: 'Nederlands (BE)',
   dragRangeHint: 'Sleep de paarse laagste noot of de groene hoogste noot omhoog of omlaag. Gebruik de pijltjestoetsen als een noot geselecteerd is.',
   rangeStaffLabel: 'Stel het nootbereik in op de notenbalk',
@@ -62,4 +62,5 @@ export default {
   decrease: 'Verlagen',
   increase: 'Verhogen'
 }
+
 
