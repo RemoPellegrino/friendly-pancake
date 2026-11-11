@@ -1,4 +1,4 @@
-export default {
+export default { rhythm: 'Rhythm practice', rhythmHelp: 'Hold each note for its full length. Release during rests. Use the pad or focus it and hold Space.', tempo: 'Tempo (BPM)', metronome: 'Metronome click', rhythmSheet: 'Rhythm in 4/4', rhythmRest: 'Quarter rest', rhythmHalf: 'Half note', rhythmQuarter: 'Quarter note', beatProgress: 'Beat progress', countIn: 'Count in: four beats', rhythmReady: 'Ready for four beats', rhythmResult: 'Notes on time: {score}/2', holding: 'Holding', rhythmPad: 'Press and hold', startRhythm: 'Start', stopRhythm: 'Stop',
   languageName: 'English (UK)', appName: 'Gamify Music Theory', tagline: 'Little notes. Big discoveries.',
   dragRangeHint: 'Drag the purple lowest note or the teal highest note up or down. Use arrow keys when a note is selected.',
   rangeStaffLabel: 'Set the note range on the staff',
@@ -12,4 +12,5 @@ export default {
   staffLabel: 'Staff with a note to identify', durationLabel: 'Musical symbol with a duration to identify',
   loading: 'Getting your music ready…', storageError: 'Progress could not be saved on this device.', decrease: 'Decrease', increase: 'Increase',
 };
+
 

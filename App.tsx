@@ -5,6 +5,7 @@ import { DEFAULT_LOCALE, locales } from './Locale';
 import { type Clef, DEFAULT_SETTINGS, makeQuestion, type Mode, noteLabel, type Settings } from './src/music';
 import { Staff } from './src/Staff';
 import { RangeStaff } from './src/RangeStaff';
+import { RhythmPractice } from './src/RhythmPractice';
 
 type Score = { correct: number; wrong: number };
 type Scores = Record<Mode, Score>;
@@ -24,7 +25,7 @@ function validSettings(v: unknown): v is Settings {
 }
 export default function App() {
   const [ready, setReady] = useState(false);
-  const [page, setPage] = useState<'practice' | 'settings'>(() => new URLSearchParams(location.search).get('page') === 'settings' ? 'settings' : 'practice');
+  const [page, setPage] = useState<'practice' | 'settings' | 'rhythm'>(() => new URLSearchParams(location.search).get('page') === 'settings' ? 'settings' : 'practice');
   const [locale, setLocale] = useState(DEFAULT_LOCALE);
   const [settings, setSettings] = useState(DEFAULT_SETTINGS);
   const [scores, setScores] = useState<Scores>(emptyScores);
@@ -78,8 +79,8 @@ export default function App() {
   return <main className="content">
     <span className="brand">♫</span><h1 className="title">{t.appName}</h1><span className="subtitle">{t.tagline}</span>
     {!ready ? <span>{t.loading}</span> : <>
-      <div className="row">{(['practice', 'settings'] as const).map(p => <Button key={p} title={t[p]} selected={page === p} onPress={() => setPage(p)}/>)}</div>
-      {page === 'practice' ? <>
+      <div className="row">{(['practice', 'rhythm', 'settings'] as const).map(p => <Button key={p} title={t[p]} selected={page === p} onPress={() => setPage(p)}/>)}</div>
+      {page === 'rhythm' ? <RhythmPractice t={t}/> : page === 'practice' ? <>
         <div className="row">{modes.map(m => <Button key={m} title={t[m]} selected={mode === m} onPress={() => { setMode(m); next(m); }}/>)}</div>
         <div className="scores"><span className="correct">{t.correct}: {score.correct}</span><span className="wrong">{t.wrong}: {score.wrong}</span></div>
         <div className="card">
@@ -109,3 +110,4 @@ export default function App() {
 function Button({ title, onPress, selected, label }: { title: string; onPress: () => void; selected?: boolean; label?: string }) {
   return <button type="button" aria-label={label ?? title} aria-pressed={selected} onClick={onPress} className={`button ${selected ? 'selected' : ''}`}>{title}</button>;
 }
+
