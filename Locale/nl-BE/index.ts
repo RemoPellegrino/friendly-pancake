@@ -1,5 +1,12 @@
 
-export default { rhythm: 'Ritme oefenen', rhythmHelp: 'Houd elke noot volledig aan. Laat los tijdens rusten. Gebruik het vlak of focus het en houd de spatiebalk in.', tempo: 'Tempo (BPM)', metronome: 'Metronoomklik', rhythmSheet: 'Ritme in 4/4', rhythmRest: 'Kwartrust', rhythmHalf: 'Halve noot', rhythmQuarter: 'Kwartnoot', beatProgress: 'Telvoortgang', countIn: 'Aftellen: vier tellen', rhythmReady: 'Klaar voor vier tellen', rhythmResult: 'Noten op tijd: {score}/2', holding: 'Ingedrukt', rhythmPad: 'Druk en houd vast', startRhythm: 'Start', stopRhythm: 'Stop',
+export default {
+  ear: 'Gehoortraining',
+  earPrompt: 'Welke noot hoor je?',
+  earHelp: 'Speel de toon af en kies de nootnaam. Je kunt opnieuw luisteren voordat je antwoordt. Alleen stamtonen; het octaaf telt niet mee.',
+  playTone: 'Speel toon',
+  replayTone: 'Opnieuw luisteren',
+  audioError: 'De toon kon niet worden afgespeeld. Controleer je geluidsinstellingen en probeer opnieuw.',
+ rhythm: 'Ritme oefenen', rhythmHelp: 'Houd elke noot volledig aan. Laat los tijdens rusten. Gebruik het vlak of focus het en houd de spatiebalk in.', tempo: 'Tempo (BPM)', metronome: 'Metronoomklik', rhythmSheet: 'Ritme in 4/4', rhythmRest: 'Kwartrust', rhythmHalf: 'Halve noot', rhythmQuarter: 'Kwartnoot', beatProgress: 'Telvoortgang', countIn: 'Aftellen: vier tellen', rhythmReady: 'Klaar voor vier tellen', rhythmResult: 'Noten op tijd: {score}/2', holding: 'Ingedrukt', rhythmPad: 'Druk en houd vast', startRhythm: 'Start', stopRhythm: 'Stop',
   languageName: 'Nederlands (BE)',
   dragRangeHint: 'Sleep de paarse laagste noot of de groene hoogste noot omhoog of omlaag. Gebruik de pijltjestoetsen als een noot geselecteerd is.',
   rangeStaffLabel: 'Stel het nootbereik in op de notenbalk',
@@ -33,7 +40,7 @@ export default { rhythm: 'Ritme oefenen', rhythmHelp: 'Houd elke noot volledig a
   lowest: 'Laagste noot',
   highest: 'Hoogste noot',
 
-  rangeHint: 'Schakel minstens één sleutel in. Het nootbereik geldt voor de oefening met nootnamen.',
+  rangeHint: 'Schakel minstens één sleutel in. Het nootbereik geldt voor nootnamen en gehoortraining.',
   savedHint: 'Instellingen en scores worden op dit toestel bewaard. Alles werkt ook offline.',
 
   noteNames: [

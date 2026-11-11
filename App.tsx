@@ -5,12 +5,13 @@ import { DEFAULT_LOCALE, locales } from './Locale';
 import { type Clef, DEFAULT_SETTINGS, makeQuestion, type Mode, noteLabel, type Settings } from './src/music';
 import { Staff } from './src/Staff';
 import { RangeStaff } from './src/RangeStaff';
+import { EarTone } from './src/EarTone';
 import { RhythmPractice } from './src/RhythmPractice';
 
 type Score = { correct: number; wrong: number };
 type Scores = Record<Mode, Score>;
-const emptyScores = (): Scores => ({ names: { correct: 0, wrong: 0 }, lengths: { correct: 0, wrong: 0 }, rests: { correct: 0, wrong: 0 } });
-const modes: Mode[] = ['names', 'lengths', 'rests'];
+const emptyScores = (): Scores => ({ names: { correct: 0, wrong: 0 }, lengths: { correct: 0, wrong: 0 }, rests: { correct: 0, wrong: 0 }, ear: { correct: 0, wrong: 0 } });
+const modes: Mode[] = ['names', 'lengths', 'rests', 'ear'];
 const STORAGE_KEY = 'music-theory-v1';
 const isRecord = (v: unknown): v is Record<string, unknown> => typeof v === 'object' && v !== null;
 const isScore = (v: unknown): v is Score => isRecord(v) && typeof v.correct === 'number' && Number.isSafeInteger(v.correct) && v.correct >= 0 && typeof v.wrong === 'number' && Number.isSafeInteger(v.wrong) && v.wrong >= 0;
@@ -32,6 +33,7 @@ export default function App() {
   const [mode, setMode] = useState<Mode>('names');
   const [question, setQuestion] = useState(() => makeQuestion('names', DEFAULT_SETTINGS));
   const [answer, setAnswer] = useState<number | null>(null);
+  const [heard, setHeard] = useState(false);
   const [storageError, setStorageError] = useState(false);
   const answered = useRef(false);
   const saveQueue = useRef(Promise.resolve());
@@ -46,7 +48,10 @@ export default function App() {
       const data = JSON.parse(raw);
       if (locales[data.locale]) setLocale(data.locale);
       if (validSettings(data.settings)) { setSettings(data.settings); setQuestion(makeQuestion('names', data.settings)); }
-      if (data.scores && modes.every(m => isScore(data.scores[m]))) setScores(data.scores);
+      if (isRecord(data.scores)) {
+        const saved = data.scores;
+        setScores(Object.fromEntries(modes.map(m => [m, isScore(saved[m]) ? saved[m] : { correct: 0, wrong: 0 }])) as Scores);
+      }
     }).catch(() => setStorageError(true)).finally(() => setReady(true));
   }, []);
   useEffect(() => {
@@ -55,11 +60,11 @@ export default function App() {
     saveQueue.current = saveQueue.current.then(() => browserStorage.setItem(STORAGE_KEY, payload)).then(() => setStorageError(false)).catch(() => setStorageError(true));
   }, [ready, locale, settings, scores]);
   function next(nextMode = mode, nextSettings = settings) {
-    answered.current = false; setAnswer(null);
+    answered.current = false; setAnswer(null); setHeard(false);
     setQuestion(previous => makeQuestion(nextMode, nextSettings, previous));
   }
   function submit(index: number) {
-    if (answered.current) return;
+    if (answered.current || (mode === 'ear' && !heard)) return;
     answered.current = true; setAnswer(index);
     const key = index === question.answer ? 'correct' : 'wrong';
     setScores(previous => ({ ...previous, [mode]: { ...previous[mode], [key]: previous[mode][key] + 1 } }));
@@ -74,7 +79,7 @@ export default function App() {
     if (range[bound] === settings.ranges[clef][bound]) return;
     updateSettings({ ...settings, ranges: { ...settings.ranges, [clef]: range } });
   }
-  const choices = mode === 'names' ? t.noteNames : t.durations;
+  const choices = mode === 'names' || mode === 'ear' ? t.noteNames : t.durations;
   const score = scores[mode];
   return <main className="content">
     <span className="brand">♫</span><h1 className="title">{t.appName}</h1><span className="subtitle">{t.tagline}</span>
@@ -84,10 +89,11 @@ export default function App() {
         <div className="row">{modes.map(m => <Button key={m} title={t[m]} selected={mode === m} onPress={() => { setMode(m); next(m); }}/>)}</div>
         <div className="scores"><span className="correct">{t.correct}: {score.correct}</span><span className="wrong">{t.wrong}: {score.wrong}</span></div>
         <div className="card">
-          <h2 className="heading">{mode === 'names' ? t.namePrompt : mode === 'lengths' ? t.lengthPrompt : t.restPrompt}</h2>
-          <span className="hint">{mode === 'names' ? t[question.clef] : t.timeHint}</span>
-          <Staff question={question} mode={mode} label={mode === 'names' ? t.staffLabel : t.durationLabel}/>
-          <div className="answers">{choices.map((choice, i) => <button type="button" key={i} disabled={answer !== null} onClick={() => submit(i)} className={`answer ${answer !== null && question.answer === i ? 'rightAnswer' : ''} ${answer === i && i !== question.answer ? 'wrongAnswer' : ''}`}><span className="answerText">{choice}</span></button>)}</div>
+          <h2 className="heading">{mode === 'ear' ? t.earPrompt : mode === 'names' ? t.namePrompt : mode === 'lengths' ? t.lengthPrompt : t.restPrompt}</h2>
+          <span className="hint">{mode === 'ear' ? t.earHelp : mode === 'names' ? t[question.clef] : t.timeHint}</span>
+          {mode === 'ear' && <EarTone key={`${question.clef}-${question.note}`} note={question.note} t={t} onHeard={() => setHeard(true)}/>}
+          {(mode !== 'ear' || answer !== null) && <Staff question={question} mode={mode} label={mode === 'names' || mode === 'ear' ? t.staffLabel : t.durationLabel}/>}
+          <div className="answers">{choices.map((choice, i) => <button type="button" key={i} disabled={answer !== null || (mode === 'ear' && !heard)} onClick={() => submit(i)} className={`answer ${answer !== null && question.answer === i ? 'rightAnswer' : ''} ${answer === i && i !== question.answer ? 'wrongAnswer' : ''}`}><span className="answerText">{choice}</span></button>)}</div>
           <div aria-live="polite" className="feedback">{answer !== null && <span className={`feedbackText ${answer === question.answer ? 'correct' : 'wrong'}`}>{answer === question.answer ? `${t.correctFeedback} ${choices[question.answer]}` : `${t.wrongFeedback} ${choices[question.answer]}`}</span>}</div>
           {answer !== null && <Button title={t.next} selected onPress={() => next()}/>}
         </div>
